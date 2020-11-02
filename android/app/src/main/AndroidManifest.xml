@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
 
     <uses-permission android:name="android.permission.NFC"></uses-permission>
-    <uses-feature android:name="android.hardware.nfc"></uses-feature>
+    <uses-feature android:name="android.hardware.nfc" android:required="true"></uses-feature>
 
     <application
         android:name="io.flutter.app.FlutterApplication"
