@@ -61,6 +61,7 @@ class NfcManager {
     }
   }
 
+  //ancora da implementare
   void delete(NDEFMessage message){
     message.tag.write(null);
   }
