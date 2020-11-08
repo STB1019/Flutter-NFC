@@ -6,7 +6,7 @@ class NfcManager {
   var attempts = new Map<String, int>();
 
 
-  void readable() async {
+  void addReadable() async {
     NDEFMessage message = await NFC.readNDEF(once: true).first;
     availableKey.add(message.id);
   }
