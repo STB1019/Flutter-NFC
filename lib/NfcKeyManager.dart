@@ -11,6 +11,10 @@ class NfcManager {
     availableKey.add(message.id);
   }
 
+  void addReadableId(String s) async {
+    availableKey.add(s);
+  }
+
   /*
   Metodo che ritorna:
   -> 1 se posso leggere il tag
