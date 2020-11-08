@@ -1,19 +1,21 @@
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 
 class NfcManager {
-  List<String> availableKey = new List();
-  List<String> deniedKey = new List();
+  Set<String> availableKey = new Set();
+  Set<String> deniedKey = new Set();
   var attempts = new Map<String, int>();
 
-
+ //metodo di aggiunt tag tramite scansione
   void addReadable() async {
     NDEFMessage message = await NFC.readNDEF(once: true).first;
     availableKey.add(message.id);
   }
 
+  //metodo di aggiunta tag tramite id
   void addReadableId(String s) async {
     availableKey.add(s);
   }
+
 
   /*
   Metodo che ritorna:
@@ -44,10 +46,10 @@ class NfcManager {
      */
 
       if (attempts.containsKey(message.id)) {
-        int number_attempts = attempts.values as int;
-        number_attempts = number_attempts + 1;
-        if (number_attempts < 3) {
-          attempts.update(message.id, (value) => number_attempts);
+        int numberAttempts = attempts.values as int;
+        numberAttempts = numberAttempts + 1;
+        if (numberAttempts < 3) {
+          attempts.update(message.id, (value) => numberAttempts);
           return 0;
         } else {
           //ELIMINAZIONE DEL CONTENUTO DAL TAG

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/NfcKeyManager.dart';
 
-class HomePage extends StatefulWidget {
+class AddKey extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _AddKeyState createState() => _AddKeyState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AddKeyState extends State<AddKey> {
 
   NfcManager manager;
   TextEditingController controller;
