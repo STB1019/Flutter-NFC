@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfc_app/NfcKeyManager.dart';
+import 'package:nfc_app/NfcKeyManager.dart' as NFCM;
 
 class AddKey extends StatefulWidget {
   @override
@@ -7,16 +7,15 @@ class AddKey extends StatefulWidget {
 }
 
 //TODO: DEVO PASSARGLI IL MANAGER
+NFCM.NfcManager manager;
 
 class _AddKeyState extends State<AddKey> {
 
-  NfcManager manager;
   TextEditingController controller;
   @override
   void initState() {
     super.initState();
-    manager = ModalRoute.of(context).settings.arguments as NfcManager;
-    if (manager.esisto() != null) print(manager.esisto());
+    manager=NFCM.NfcManager();
     controller = new TextEditingController();
   }
 

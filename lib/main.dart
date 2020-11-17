@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'NfcKeyManager.dart';
+import 'NfcKeyManager.dart' as NFCM;
 import 'Pages/AddKeyPage.dart';
 
 void main() => runApp(MyApp());
-NfcManager manager = new NfcManager();
+NFCM.NfcManager manager = NFCM.NfcManager();
 
 class MyApp extends StatelessWidget {
   @override
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage>{
         child: RaisedButton(
           child: Text('Add new Key whit id'),
           onPressed: () {
-            Navigator.pushNamed(context, '/addkey' , arguments: manager);
+            Navigator.pushNamed(context, '/addkey');
           },
         ),
       ),

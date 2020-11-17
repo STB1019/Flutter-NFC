@@ -1,10 +1,21 @@
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 
 class NfcManager {
+
+
+//SINGLETON
+  static final NfcManager _instance = new NfcManager._();
+  NfcManager._(); //metodo costruttore privato
+
+  factory NfcManager() => _instance; //produce oggetti uguali
+
+  static NfcManager _nf; //alias
+  
   Set<String> availableKey = new Set();
   Set<String> deniedKey = new Set();
   List<String> log = new List();
   var attempts = new Map<String, int>();
+
 
   //funzione per creare dei log per i tag, così provo gli stream
   void logRegister(){
@@ -15,6 +26,7 @@ class NfcManager {
 
     });
   }
+
 
   String esisto(){
     return "esisto";
