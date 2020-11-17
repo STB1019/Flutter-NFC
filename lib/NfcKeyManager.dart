@@ -3,7 +3,28 @@ import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 class NfcManager {
   Set<String> availableKey = new Set();
   Set<String> deniedKey = new Set();
+  List<String> log = new List();
   var attempts = new Map<String, int>();
+
+  //funzione per creare dei log per i tag, così provo gli stream
+  void logRegister(){
+    Stream<NDEFMessage> stream = NFC.readNDEF();
+
+    stream.listen((NDEFMessage message) {
+      log.add("NFC key: " + message.tag.id);
+
+    });
+  }
+
+  String esisto(){
+    return "esisto";
+  }
+
+  //getter log
+  List getLog(){
+    return log;
+  }
+
 
  //metodo di aggiunt tag tramite scansione
   void addReadable() async {
@@ -15,7 +36,6 @@ class NfcManager {
   void addReadableId(String s) async {
     availableKey.add(s);
   }
-
 
   /*
   Metodo che ritorna:
@@ -69,7 +89,7 @@ class NfcManager {
 
   //ancora da implementare
   void delete(NDEFMessage message){
-    message.tag.write(null);
+    message.tag.delete(message);
   }
 
 

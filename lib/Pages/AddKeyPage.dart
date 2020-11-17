@@ -6,15 +6,17 @@ class AddKey extends StatefulWidget {
   _AddKeyState createState() => _AddKeyState();
 }
 
+//TODO: DEVO PASSARGLI IL MANAGER
+
 class _AddKeyState extends State<AddKey> {
 
   NfcManager manager;
   TextEditingController controller;
-
   @override
   void initState() {
     super.initState();
-    manager = new NfcManager();
+    manager = ModalRoute.of(context).settings.arguments as NfcManager;
+    if (manager.esisto() != null) print(manager.esisto());
     controller = new TextEditingController();
   }
 
@@ -37,7 +39,7 @@ class _AddKeyState extends State<AddKey> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[RaisedButton(
                   child: Text('Login'),
-                  onPressed: () {manager.addReadableId(controller.value.text); print(controller.value.text);},
+                  onPressed: () {print(manager.esisto()); manager.addReadableId(controller.value.text); print(controller.value.text);},
                 )
                 ],
               )
