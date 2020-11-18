@@ -10,7 +10,7 @@ class NfcManager {
   factory NfcManager() => _instance; //produce oggetti uguali
 
   static NfcManager _nf; //alias
-  
+
   Set<String> availableKey = new Set();
   Set<String> deniedKey = new Set();
   List<String> log = new List();
@@ -22,20 +22,25 @@ class NfcManager {
     Stream<NDEFMessage> stream = NFC.readNDEF();
 
     stream.listen((NDEFMessage message) {
-      log.add("NFC key: " + message.tag.id);
+      log.add("NFC key: " + message.id);
+      print(message.id);
+      if(message.id != null){
+        print("non c'è nada");
+      }
 
     });
   }
 
 
-  String esisto(){
-    return "esisto";
+  String oneLog(){
+    return log.first;
   }
 
   //getter log
   List getLog(){
     return log;
   }
+
 
 
  //metodo di aggiunt tag tramite scansione

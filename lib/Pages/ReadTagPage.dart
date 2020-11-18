@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/NfcKeyManager.dart' as NFCM;
 
-class AddKey extends StatefulWidget {
+class ReadTag extends StatefulWidget {
   @override
-  _AddKeyState createState() => _AddKeyState();
+  _ReadTagState createState() => _ReadTagState();
 }
 
 NFCM.NfcManager manager;
 
-class _AddKeyState extends State<AddKey> {
+class _ReadTagState extends State<ReadTag> {
 
   TextEditingController controller;
   @override
@@ -21,29 +21,31 @@ class _AddKeyState extends State<AddKey> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Key')),
+      appBar: AppBar(title: Text('Read Key')),
       body: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                child: Text('Add new readable key:'),
-              ),
-              Flexible(
-                  child: TextField(controller: controller,)
+                child: Text('Read Tag'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[RaisedButton(
-                  child: Text('Login'),
-                  onPressed: () {
-                    manager.addReadableId(controller.value.text);
-                    print(controller.value.text);
-                    },
+                  child: Text('Read Tag'),
+                  onPressed: () {manager.canRead();},
                 )
                 ],
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[RaisedButton(
+                  child: Text('Create Log'),
+                  onPressed: () {manager.logRegister();},
+                )
+                ],
+              ),
             ],
           )
 
@@ -51,5 +53,4 @@ class _AddKeyState extends State<AddKey> {
 
     );
   }
-
 }

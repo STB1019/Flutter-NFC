@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_app/Pages/ReadTagPage.dart';
+import 'package:nfc_app/Pages/TagListPage.dart';
 import 'NfcKeyManager.dart' as NFCM;
 import 'Pages/AddKeyPage.dart';
 
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
     return {
       '/': (context) => HomePage(),
       '/addkey': (context) => AddKey(),
+      '/readTag': (context) => ReadTag(),
+      '/listTag': (context) => TagList(),
     };
   }
 }
@@ -41,22 +45,70 @@ class _HomePageState extends State<HomePage>{
         title: Text('HomePage'),
       ),
       body: Center(
-        child: RaisedButton(
-          child: Text('Add new Key whit id'),
-          onPressed: () {
-            Navigator.pushNamed(context, '/addkey');
-          },
-        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[RaisedButton(
+                  child: Text('Read Tag'),
+                  onPressed: () { Navigator.pushNamed(context, '/addkey');},
+                )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[RaisedButton(
+                  child: Text('Create Log'),
+                  onPressed: () {Navigator.pushNamed(context, '/readTag');},
+                )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[RaisedButton(
+                  child: Text('Create Log'),
+                  onPressed: () {Navigator.pushNamed(context, '/listTag');},
+                )
+                ],
+              ),
+
+
+
+            ],
+          )
+
       ),
     );
   }
 }
 
+Widget _myListViewBuilder(BuildContext context) {
+  return ListView.builder(
+    itemBuilder: (context, index) {
+      return ListTile(
+        title: Text(
+            'Article number $index' /*manager.getLog().elementAt(index)*/),
+      );
+    },
+  );
+}
 
 
 
 
-/*class AddKey extends StatefulWidget {
+/*
+child: RaisedButton(
+          child: Text('Add new Key whit id'),
+          onPressed: () {
+            Navigator.pushNamed(context, '/addkey');
+          },
+        ),
+
+
+
+
+class AddKey extends StatefulWidget {
   @override
   _AddKeyState createState() => _AddKeyState();
 }
