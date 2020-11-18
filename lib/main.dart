@@ -26,9 +26,12 @@ class MyApp extends StatelessWidget {
       '/addkey': (context) => AddKey(),
       '/readTag': (context) => ReadTag(),
       '/listTag': (context) => TagList(),
+      ConfirmPage.routeName: (context) => ConfirmPage(),
     };
   }
 }
+
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -67,7 +70,7 @@ class _HomePageState extends State<HomePage>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[RaisedButton(
-                  child: Text('Create Log'),
+                  child: Text('Log list'),
                   onPressed: () {Navigator.pushNamed(context, '/listTag');},
                 )
                 ],
@@ -83,16 +86,7 @@ class _HomePageState extends State<HomePage>{
   }
 }
 
-Widget _myListViewBuilder(BuildContext context) {
-  return ListView.builder(
-    itemBuilder: (context, index) {
-      return ListTile(
-        title: Text(
-            'Article number $index' /*manager.getLog().elementAt(index)*/),
-      );
-    },
-  );
-}
+
 
 
 

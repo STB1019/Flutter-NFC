@@ -22,12 +22,10 @@ class NfcManager {
     Stream<NDEFMessage> stream = NFC.readNDEF();
 
     stream.listen((NDEFMessage message) {
-      log.add("NFC key: " + message.id);
+      log.add("NFC key: " + message.tag.id);
+      print("NFC key: " + message.tag.id);
       print(message.id);
-      if(message.id != null){
-        print("non c'è nada");
-      }
-
+      print(message.tag.id);
     });
   }
 
@@ -65,12 +63,13 @@ class NfcManager {
       NDEFMessage message = await NFC.readNDEF(once: true).first;
 
       //Se posso leggere questo tag allora ritorno 1
-      if (availableKey.contains(message.id)) {
+
+      if (availableKey.contains(message.id)==true) {
         return 1;
       }
 
       //Se la chiave è contenuta nelle chiavi "non leggibili" allora ritorno -1
-      if (deniedKey.contains(message.id)) {
+      if (deniedKey.contains(message.id)==true) {
         return -1;
       }
 
@@ -82,19 +81,24 @@ class NfcManager {
     2) Non avendo mai letto questo tag che non sono abilitato a leggere devo inserirlo nella mia mappa
      */
 
-      if (attempts.containsKey(message.id)) {
-        int numberAttempts = attempts.values as int;
+      if (attempts.containsKey(message.id)==true) {
+        int numberAttempts = attempts[message.id];
+        print(numberAttempts);
         numberAttempts = numberAttempts + 1;
         if (numberAttempts < 3) {
           attempts.update(message.id, (value) => numberAttempts);
           return 0;
         } else {
-          //ELIMINAZIONE DEL CONTENUTO DAL TAG
+          print('Non più leggibile');
+          //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
           deniedKey.add(message.id);
+          attempts.remove(message.id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
           return -1;
         }
       } else {
+        print('primo tentativo');
         attempts[message.id] = 0;
+        print(message.payload);
       }
 
       return null;
