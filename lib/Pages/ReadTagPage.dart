@@ -8,7 +8,13 @@ class ReadTag extends StatefulWidget {
   _ReadTagState createState() => _ReadTagState();
 }
 
+class ScreenArguments{
+  final int check;
+  ScreenArguments(this.check);
+}
+
 NFCM.NfcManager manager;
+
 
 class _ReadTagState extends State<ReadTag> {
 
@@ -18,6 +24,14 @@ class _ReadTagState extends State<ReadTag> {
     super.initState();
     manager=NFCM.NfcManager();
     controller = new TextEditingController();
+  }
+
+  void read() async {
+    int i = await manager.canRead();
+    Navigator.pushNamed(context,
+        '/confirmPage',
+        arguments: ScreenArguments(i)
+    );
   }
 
 
@@ -38,9 +52,7 @@ class _ReadTagState extends State<ReadTag> {
                 children: <Widget>[RaisedButton(
                   child: Text('Read Tag'),
                   onPressed: ()  {
-                    Navigator.pushNamed(context,
-                      '/confirmPage',
-                    );
+                    read();
                     },
                 )
                 ],
@@ -72,28 +84,31 @@ class _ReadTagState extends State<ReadTag> {
 
 
 class ConfirmPage extends StatefulWidget{
-
   @override
-  State<StatefulWidget> createState() {
     _ConfirmPageState createState() => _ConfirmPageState();
-  }
-
 }
 
 
 class _ConfirmPageState extends State<ConfirmPage> {
 
-  int i;
-
+  @override
+  void initState () {
+    manager=NFCM.NfcManager();
+  }
 
 
   @override
   Widget build(BuildContext context) {
+
+    final ScreenArguments args = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
     var currentColor;
     var text;
 
-    print(i);
-    switch (i){
+    print(args.check);
+    switch (args.check){
       case 1:
         currentColor = Colors.green;
         text = 'You can read this Tag!';
@@ -101,7 +116,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
 
       case 0:
         currentColor = Colors.yellowAccent;
-        text = 'You can read this Tag!''WARNING: \n You are not authorized to read this key \n After 3 attempts the content on the tag will be deleted';
+        text = 'WARNING: \nYou are not authorized to read this key \nAfter 3 attempts the content on the tag will be deleted';
         break;
 
       case -1:
@@ -110,19 +125,20 @@ class _ConfirmPageState extends State<ConfirmPage> {
         break;
     }
 
-    return Material(
-      color: Colors.green,
-    );
-    /*return Scaffold(
+
+
+
+
+    return Scaffold(
+      backgroundColor: currentColor,
       body: Center(
         child: Container(
-          color: currentColor,
           child: Container(
-            child:(i==null)?CircularProgressIndicator(value: 25,): Text(text),
+            child:(args.check==null)?CircularProgressIndicator(value: 25,): Text(text),
           ),
         ),
       ),
-    );*/
+    );
 
   }
 
