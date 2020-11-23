@@ -108,10 +108,19 @@ class NfcManager {
     }
   }
 
-  //ancora da implementare
-  void delete(NDEFMessage message){
-    message.tag.delete(message);
+  Future<void> write() async {
+    NDEFMessage newMessage = NDEFMessage.withRecords(
+        new List<NDEFRecord>()
+    );
+    
+    Stream<NDEFTag> stream = NFC.writeNDEF(newMessage);
+
+    stream.listen((NDEFTag tag) {
+      print("wrote to tag");
+    });
   }
+
+
 
 
 

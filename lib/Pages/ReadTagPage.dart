@@ -6,12 +6,6 @@ class ScreenArguments{
   ScreenArguments(this.check);
 }
 
-Map<String, WidgetBuilder> mainRouting(){
-  return {
-    ConfirmPage.routeName: (context) => ConfirmPage(),
-  };
-}
-
 class ReadTag extends StatefulWidget {
   @override
   _ReadTagState createState() => _ReadTagState();
@@ -27,17 +21,15 @@ class _ReadTagState extends State<ReadTag> {
     super.initState();
     manager=NFCM.NfcManager();
     controller = new TextEditingController();
-    routes: mainRouting();
-
   }
-/*
+
   void read() async {
     int i = await manager.canRead();
     Navigator.pushNamed(context,
         ConfirmPage.routeName,
       arguments: ScreenArguments(i)
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +48,17 @@ class _ReadTagState extends State<ReadTag> {
                 children: <Widget>[RaisedButton(
                   child: Text('Read Tag'),
                   onPressed: ()  {
-                        //read();
-                    manager.canRead();
+                        read();
+                    //manager.canRead();
                     },
+                )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[RaisedButton(
+                  child: Text("Add tag's key with scan"),
+                  onPressed: () {manager.addReadable();},
                 )
                 ],
               ),
@@ -95,6 +95,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
         .settings
         .arguments;
 
+    print(args.check);
     if (args.check == 1) {
       return Scaffold(
         backgroundColor: Colors.green,
@@ -124,10 +125,11 @@ class _ConfirmPageState extends State<ConfirmPage> {
           ),
         ),
       );
-    }else{
-      return Scaffold(
-        backgroundColor: Colors.black87,
-      );
     }
+
+    return Scaffold(
+      backgroundColor: Colors.black87,
+    );
+
   }
 }

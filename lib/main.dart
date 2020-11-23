@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
     );
   }
 
+
+
   //qui aggiungo le route che posso raggiungere
   Map<String, WidgetBuilder> mainRouting(){
     return {
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[RaisedButton(
-                  child: Text('Read Tag'),
+                  child: Text('Add key'),
                   onPressed: () { Navigator.pushNamed(context, '/addkey');},
                 )
                 ],
@@ -62,7 +64,7 @@ class _HomePageState extends State<HomePage>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[RaisedButton(
-                  child: Text('Create Log'),
+                  child: Text('Read Tag'),
                   onPressed: () {Navigator.pushNamed(context, '/readTag');},
                 )
                 ],
