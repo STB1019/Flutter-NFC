@@ -1,10 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:nfc_app/NfcKeyManager.dart' as NFCM;
 
-class ScreenArguments{
-  final int check;
-  ScreenArguments(this.check);
-}
 
 class ReadTag extends StatefulWidget {
   @override
@@ -23,13 +20,6 @@ class _ReadTagState extends State<ReadTag> {
     controller = new TextEditingController();
   }
 
-  void read() async {
-    int i = await manager.canRead();
-    Navigator.pushNamed(context,
-        ConfirmPage.routeName,
-      arguments: ScreenArguments(i)
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +38,9 @@ class _ReadTagState extends State<ReadTag> {
                 children: <Widget>[RaisedButton(
                   child: Text('Read Tag'),
                   onPressed: ()  {
-                        read();
-                    //manager.canRead();
+                    Navigator.pushNamed(context,
+                      '/confirmPage',
+                    );
                     },
                 )
                 ],
@@ -79,57 +70,60 @@ class _ReadTagState extends State<ReadTag> {
   }
 }
 
+
 class ConfirmPage extends StatefulWidget{
-  static const routeName = '/extractArguments';
+
   @override
   State<StatefulWidget> createState() {
     _ConfirmPageState createState() => _ConfirmPageState();
   }
 
 }
+
+
 class _ConfirmPageState extends State<ConfirmPage> {
+
+  int i;
+
+
+
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
+    var currentColor;
+    var text;
 
-    print(args.check);
-    if (args.check == 1) {
-      return Scaffold(
-        backgroundColor: Colors.green,
-        body: Center(
-          child: Container(
-            child: Text('You can read this Tag!'),
-          ),
-        ),
-      );
-    } else if (args.check == 0) {
-      return Scaffold(
-        backgroundColor: Colors.yellowAccent,
-        body: Center(
-          child: Container(
-            child: Text(
-                'WARNING: \n You are not authorized to read this key \n After 3 attempts the content on the tag will be deleted'),
-          ),
-        ),
-      );
-    } else if (args.check == -1) {
-      return Scaffold(
-        backgroundColor: Colors.red,
-        body: Center(
-          child: Container(
-            child: Text(
-                'WARNING: \n You are not authorized to read this key!!'),
-          ),
-        ),
-      );
+    print(i);
+    switch (i){
+      case 1:
+        currentColor = Colors.green;
+        text = 'You can read this Tag!';
+        break;
+
+      case 0:
+        currentColor = Colors.yellowAccent;
+        text = 'You can read this Tag!''WARNING: \n You are not authorized to read this key \n After 3 attempts the content on the tag will be deleted';
+        break;
+
+      case -1:
+        currentColor = Colors.red;
+        text = 'WARNING: \n You are not authorized to read this key!!';
+        break;
     }
 
-    return Scaffold(
-      backgroundColor: Colors.black87,
+    return Material(
+      color: Colors.green,
     );
+    /*return Scaffold(
+      body: Center(
+        child: Container(
+          color: currentColor,
+          child: Container(
+            child:(i==null)?CircularProgressIndicator(value: 25,): Text(text),
+          ),
+        ),
+      ),
+    );*/
 
   }
+
 }

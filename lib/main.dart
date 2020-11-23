@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       '/addkey': (context) => AddKey(),
       '/readTag': (context) => ReadTag(),
       '/listTag': (context) => TagList(),
-      ConfirmPage.routeName: (context) => ConfirmPage(),
+      '/confirmPage': (context) => ConfirmPage(),
     };
   }
 }

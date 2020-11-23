@@ -96,9 +96,7 @@ class NfcManager {
           return -1;
         }
       } else {
-        print('primo tentativo');
         attempts[message.id] = 0;
-        print(message.payload);
       }
 
       return null;
