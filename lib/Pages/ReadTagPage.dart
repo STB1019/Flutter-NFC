@@ -65,14 +65,6 @@ class _ReadTagState extends State<ReadTag> {
                 )
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[RaisedButton(
-                  child: Text('Create Log'),
-                  onPressed: () {manager.logRegister();},
-                )
-                ],
-              ),
             ],
           )
 

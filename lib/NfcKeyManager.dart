@@ -1,4 +1,5 @@
-import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+//import 'package:nfc_in_flutter/nfc_in_flutter.dart'; vecchia libreria
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 class NfcManager {
 
@@ -18,7 +19,8 @@ class NfcManager {
 
 
   //funzione per creare dei log per i tag, così provo gli stream
-  void logRegister(){
+  //fatto con la vecchia libreria, non mi serve più per ora
+  /*void logRegister(){
     Stream<NDEFMessage> stream = NFC.readNDEF();
 
     stream.listen((NDEFMessage message) {
@@ -27,7 +29,7 @@ class NfcManager {
       print(message.id);
       print(message.tag.id);
     });
-  }
+  }*/
 
 
   String oneLog(){
@@ -43,8 +45,8 @@ class NfcManager {
 
  //metodo di aggiunt tag tramite scansione
   void addReadable() async {
-    NDEFMessage message = await NFC.readNDEF(once: true).first;
-    availableKey.add(message.id);
+    NFCTag tag = await FlutterNfcKit.poll();
+    availableKey.add(tag.id);
   }
 
   //metodo di aggiunta tag tramite id
@@ -60,16 +62,19 @@ class NfcManager {
    */
   Future<int> canRead() async {
     try {
-      NDEFMessage message = await NFC.readNDEF(once: true).first;
+      NFCTag tag = await FlutterNfcKit.poll();
+      log.add("NFC key: " + tag.id);
+      
 
       //Se posso leggere questo tag allora ritorno 1
 
-      if (availableKey.contains(message.id)==true) {
+      if (availableKey.contains(tag.id)==true) {
+        availableKey.remove(tag.id);
         return 1;
       }
 
       //Se la chiave è contenuta nelle chiavi "non leggibili" allora ritorno -1
-      if (deniedKey.contains(message.id)==true) {
+      if (deniedKey.contains(tag.id)==true) {
         return -1;
       }
 
@@ -81,22 +86,22 @@ class NfcManager {
     2) Non avendo mai letto questo tag che non sono abilitato a leggere devo inserirlo nella mia mappa
      */
 
-      if (attempts.containsKey(message.id)==true) {
-        int numberAttempts = attempts[message.id];
+      if (attempts.containsKey(tag.id)==true) {
+        int numberAttempts = attempts[tag.id];
         print(numberAttempts);
         numberAttempts = numberAttempts + 1;
         if (numberAttempts < 3) {
-          attempts.update(message.id, (value) => numberAttempts);
+          attempts.update(tag.id, (value) => numberAttempts);
           return 0;
         } else {
           print('Non più leggibile');
           //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
-          deniedKey.add(message.id);
-          attempts.remove(message.id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
+          deniedKey.add(tag.id);
+          attempts.remove(tag.id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
           return -1;
         }
       } else {
-        attempts[message.id] = 0;
+        attempts[tag.id] = 0;
       }
 
       return null;
@@ -106,7 +111,7 @@ class NfcManager {
     }
   }
 
-  Future<void> write() async {
+  /**Future<void> write() async {
     NDEFMessage newMessage = NDEFMessage.withRecords(
         new List<NDEFRecord>()
     );
@@ -116,7 +121,8 @@ class NfcManager {
     stream.listen((NDEFTag tag) {
       print("wrote to tag");
     });
-  }
+  }*/
+
 
 
 

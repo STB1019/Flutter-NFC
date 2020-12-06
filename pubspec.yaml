@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_nfc_kit: ^2.2.0
   nfc_in_flutter: 2.0.5
   flutter:
     sdk: flutter
