@@ -2,10 +2,9 @@
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 class NfcManager {
-
-
 //SINGLETON
   static final NfcManager _instance = new NfcManager._();
+
   NfcManager._(); //metodo costruttore privato
 
   factory NfcManager() => _instance; //produce oggetti uguali
@@ -17,18 +16,16 @@ class NfcManager {
   List<String> log = new List();
   var attempts = new Map<String, int>();
 
-
-  String oneLog(){
+  String oneLog() {
     return log.first;
   }
 
   //getter log
-  List getLog(){
+  List getLog() {
     return log;
   }
 
-
- //metodo di aggiunta tag tramite scansione
+  //metodo di aggiunta tag tramite scansione
   void addReadable() async {
     NFCTag tag = await FlutterNfcKit.poll();
     availableKey.add(tag.id);
@@ -48,17 +45,19 @@ class NfcManager {
   Future<int> canRead() async {
     try {
       NFCTag tag = await FlutterNfcKit.poll();
+      print(tag.ndefAvailable.toString());
+
 
       //Se posso leggere questo tag allora ritorno 1
 
-      if (availableKey.contains(tag.id)==true) {
+      if (availableKey.contains(tag.id) == true) {
         availableKey.remove(tag.id);
         log.add(tag.id + ": tag enabled");
         return 1;
       }
 
       //Se la chiave è contenuta nelle chiavi "non leggibili" allora ritorno -1
-      if (deniedKey.contains(tag.id)==true) {
+      if (deniedKey.contains(tag.id) == true) {
         log.add(tag.id + ": tag locked");
         return -1;
       }
@@ -71,20 +70,26 @@ class NfcManager {
     2) Non avendo mai letto questo tag che non sono abilitato a leggere devo inserirlo nella mia mappa
      */
 
-      if (attempts.containsKey(tag.id)==true) {
+      if (attempts.containsKey(tag.id) == true) {
         int numberAttempts = attempts[tag.id];
         print(numberAttempts);
         numberAttempts = numberAttempts + 1;
         if (numberAttempts < 3) {
           attempts.update(tag.id, (value) => numberAttempts);
-          log.add(tag.id + ": WARNING, tag not enabled, " + numberAttempts.toString() + "° attempt");
+          log.add(tag.id +
+              ": WARNING, tag not enabled, " +
+              numberAttempts.toString() +
+              "° attempt");
           return 0;
         } else {
           log.add(tag.id + ": Attempts exhausted, tag locked");
           print('Non più leggibile');
+
+
           //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
           deniedKey.add(tag.id);
-          attempts.remove(tag.id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
+          attempts.remove(tag
+              .id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
           return -1;
         }
       } else {
@@ -98,21 +103,17 @@ class NfcManager {
     }
   }
 
-  /**Future<void> write() async {
-    NDEFMessage newMessage = NDEFMessage.withRecords(
-        new List<NDEFRecord>()
-    );
-    
-    Stream<NDEFTag> stream = NFC.writeNDEF(newMessage);
+  Future<void> write(NFCTag tag) async {
+// write NDEF records if applicable
+    if (tag.ndefWritable) {
+      // decoded NDEF records
+      await FlutterNfcKit.writeNDEFRecords([
 
-    stream.listen((NDEFTag tag) {
-      print("wrote to tag");
-    });
-  }*/
+      ]);
+      // raw NDEF records
+      await FlutterNfcKit.writeNDEFRawRecords([
 
-
-
-
-
-
+      ]);
+    }
+  }
 }

@@ -59,55 +59,54 @@ class _HomePageState extends State<HomePage> {
               expandedHeight: 200.0,
               shadowColor: Colors.black.withOpacity(0.80),
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  'NFC',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
+                  title: Text(
+                    'NFC',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                    ),
                   ),
-                ),
-                centerTitle: true,
-                background: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGOJ8ZymeJGTUhFtdsITUmgx_4vW5dVeRREQ&usqp=CAU',
-                fit: BoxFit.fill,
-                )
-              )),
+                  centerTitle: true,
+                  background: Image.asset(
+                    'assets/images/nfc.png',
+                    fit: BoxFit.fill,
+                  ))),
           SliverList(
               delegate: SliverChildListDelegate([
-                Container(
-                  margin: EdgeInsets.all(10),
-                ),
-              Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white70,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/readTag');
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "ReadMode",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
+            Container(
+              margin: EdgeInsets.all(10),
+            ),
+            Card(
+              shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
+              color: Colors.white70,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/readTag');
+                  },
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "ReadMode",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
                       ),
+                    ),
                   )),
             ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                ),
+            Container(
+              margin: EdgeInsets.all(10),
+            ),
             Card(
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.only(
@@ -122,7 +121,6 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pushNamed(context, '/addkey');
                   },
                   child: Container(
-
                     width: 200,
                     height: 200,
                     alignment: Alignment.center,
@@ -137,9 +135,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )),
             ),
-                Container(
-                  margin: EdgeInsets.all(10)
-                ),
+            Container(margin: EdgeInsets.all(10)),
             Card(
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.only(
@@ -168,7 +164,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )),
             ),
-
           ]))
         ],
       ),
