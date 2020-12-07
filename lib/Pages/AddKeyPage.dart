@@ -9,19 +9,30 @@ class AddKey extends StatefulWidget {
 NFCM.NfcManager manager;
 
 class _AddKeyState extends State<AddKey> {
-
   TextEditingController controller;
+
   @override
   void initState() {
     super.initState();
-    manager=NFCM.NfcManager();
+    manager = NFCM.NfcManager();
     controller = new TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Key')),
+      appBar: AppBar(
+        title: Text(
+          'NFC',
+          style: TextStyle(color: Colors.black),
+        ),
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100),
+                bottomRight: Radius.circular(100))),
+        backgroundColor: Colors.grey,
+        centerTitle: true,
+      ),
       body: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -31,24 +42,23 @@ class _AddKeyState extends State<AddKey> {
                 child: Text('Add new readable key:'),
               ),
               Flexible(
-                  child: TextField(controller: controller,)
-              ),
+                  child: TextField(
+                controller: controller,
+              )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[RaisedButton(
-                  child: Text('Login'),
-                  onPressed: () {
-                    manager.addReadableId(controller.value.text);
-                    print(controller.value.text);
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Add'),
+                    onPressed: () {
+                      manager.addReadableId(controller.value.text);
+                      print(controller.value.text);
                     },
-                )
+                  )
                 ],
               )
             ],
-          )
-
-      ),
-
+          )),
     );
   }
 }

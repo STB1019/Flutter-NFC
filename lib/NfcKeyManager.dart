@@ -18,20 +18,6 @@ class NfcManager {
   var attempts = new Map<String, int>();
 
 
-  //funzione per creare dei log per i tag, così provo gli stream
-  //fatto con la vecchia libreria, non mi serve più per ora
-  /*void logRegister(){
-    Stream<NDEFMessage> stream = NFC.readNDEF();
-
-    stream.listen((NDEFMessage message) {
-      log.add("NFC key: " + message.tag.id);
-      print("NFC key: " + message.tag.id);
-      print(message.id);
-      print(message.tag.id);
-    });
-  }*/
-
-
   String oneLog(){
     return log.first;
   }
@@ -42,8 +28,7 @@ class NfcManager {
   }
 
 
-
- //metodo di aggiunt tag tramite scansione
+ //metodo di aggiunta tag tramite scansione
   void addReadable() async {
     NFCTag tag = await FlutterNfcKit.poll();
     availableKey.add(tag.id);
@@ -63,18 +48,18 @@ class NfcManager {
   Future<int> canRead() async {
     try {
       NFCTag tag = await FlutterNfcKit.poll();
-      log.add("NFC key: " + tag.id);
-      
 
       //Se posso leggere questo tag allora ritorno 1
 
       if (availableKey.contains(tag.id)==true) {
         availableKey.remove(tag.id);
+        log.add(tag.id + ": tag enabled");
         return 1;
       }
 
       //Se la chiave è contenuta nelle chiavi "non leggibili" allora ritorno -1
       if (deniedKey.contains(tag.id)==true) {
+        log.add(tag.id + ": tag locked");
         return -1;
       }
 
@@ -92,8 +77,10 @@ class NfcManager {
         numberAttempts = numberAttempts + 1;
         if (numberAttempts < 3) {
           attempts.update(tag.id, (value) => numberAttempts);
+          log.add(tag.id + ": WARNING, tag not enabled, " + numberAttempts.toString() + "° attempt");
           return 0;
         } else {
+          log.add(tag.id + ": Attempts exhausted, tag locked");
           print('Non più leggibile');
           //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
           deniedKey.add(tag.id);
