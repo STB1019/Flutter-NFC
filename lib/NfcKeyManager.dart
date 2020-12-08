@@ -2,6 +2,7 @@
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 class NfcManager {
+
 //SINGLETON
   static final NfcManager _instance = new NfcManager._();
 
@@ -20,28 +21,30 @@ class NfcManager {
     return log.first;
   }
 
-  //getter log
+  ///getter log
   List getLog() {
     return log;
   }
 
-  //metodo di aggiunta tag tramite scansione
-  void addReadable() async {
+  ///metodo di aggiunta tag tramite scansione
+  Future<bool> addReadable() async {
     NFCTag tag = await FlutterNfcKit.poll();
     availableKey.add(tag.id);
+    if(tag.id != null){
+      return true;
+    }
+    return false;
   }
 
-  //metodo di aggiunta tag tramite id
+  ///metodo di aggiunta tag tramite id
   void addReadableId(String s) async {
     availableKey.add(s);
   }
 
-  /*
-  Metodo che ritorna:
-  -> 1 se posso leggere il tag
-  -> 0 se ho provato a leggere un tag ma non ho esaurito i "3 tentativi"
-  -> -1 se sto provando a leggere un tag che ho bloccato in precedenza
-   */
+  /// Metodo che ritorna:
+  ///   -> 1 se posso leggere il tag
+  ///   -> 0 se ho provato a leggere un tag ma non ho esaurito i "3 tentativi"
+  ///   -> -1 se sto provando a leggere un tag che ho bloccato in precedenza
   Future<int> canRead() async {
     try {
       NFCTag tag = await FlutterNfcKit.poll();
@@ -49,9 +52,13 @@ class NfcManager {
 
 
       //Se posso leggere questo tag allora ritorno 1
-
+      //Nel cao abbia fatto dei tentativi di lettura del tag li elimino
+      //dando altre 3 possibilità al tag in futuro
       if (availableKey.contains(tag.id) == true) {
         availableKey.remove(tag.id);
+        if (attempts.containsKey(tag.id) == true){
+          attempts.remove(tag.id);
+        }
         log.add(tag.id + ": tag enabled");
         return 1;
       }
@@ -85,7 +92,6 @@ class NfcManager {
           log.add(tag.id + ": Attempts exhausted, tag locked");
           print('Non più leggibile');
 
-
           //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
           deniedKey.add(tag.id);
           attempts.remove(tag
@@ -103,17 +109,4 @@ class NfcManager {
     }
   }
 
-  Future<void> write(NFCTag tag) async {
-// write NDEF records if applicable
-    if (tag.ndefWritable) {
-      // decoded NDEF records
-      await FlutterNfcKit.writeNDEFRecords([
-
-      ]);
-      // raw NDEF records
-      await FlutterNfcKit.writeNDEFRawRecords([
-
-      ]);
-    }
-  }
 }

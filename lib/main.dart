@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
       '/addkey': (context) => AddKey(),
       '/readTag': (context) => ReadTag(),
       '/listTag': (context) => TagList(),
-      '/confirmPage': (context) => ConfirmPage(),
     };
   }
 }

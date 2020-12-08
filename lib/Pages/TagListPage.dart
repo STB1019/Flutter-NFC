@@ -22,6 +22,18 @@ class _TagListState extends State<TagList> {
   Widget build(BuildContext context) {
     items = manager.getLog();
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'NFC',
+          style: TextStyle(color: Colors.black),
+        ),
+        shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100),
+                bottomRight: Radius.circular(100))),
+        backgroundColor: Colors.grey,
+        centerTitle: true,
+      ),
       body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -36,6 +48,3 @@ class _TagListState extends State<TagList> {
 
 }
 
-/*
-
- */

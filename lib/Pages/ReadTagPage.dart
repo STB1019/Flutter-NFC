@@ -24,9 +24,10 @@ class _ReadTagState extends State<ReadTag> {
     controller = new TextEditingController();
   }
 
-  void read() async {
+  void read(BuildContext context) async {
     int i = await manager.canRead();
-    Navigator.pushNamed(context, '/confirmPage', arguments: ScreenArguments(i));
+    //Navigator.pushNamed(context, '/confirmPage', arguments: ScreenArguments(i));
+    allert(context, i: i);
   }
 
   @override
@@ -44,7 +45,8 @@ class _ReadTagState extends State<ReadTag> {
                     bottomLeft: Radius.circular(100),
                     bottomRight: Radius.circular(100))),
             shadowColor: Colors.black.withOpacity(0.80),
-            title: Text("NFC",
+            title: Text(
+              "NFC",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20.0,
@@ -53,63 +55,60 @@ class _ReadTagState extends State<ReadTag> {
           ),
           SliverList(
               delegate: SliverChildListDelegate([
-
             Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white70,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                      read();
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Read Tag",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-
+              shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
+              color: Colors.white70,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                  onTap: () {
+                    read(context);
+                  },
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Read Tag",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   )),
             ),
             Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white70,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                      manager.addReadable();
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Abil Tag",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
+              shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
+              color: Colors.white70,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                  onTap: () {
+                    abilTag(context);
+                  },
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Abil Tag",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
                       ),
-
+                    ),
                   )),
             ),
           ]))
@@ -119,235 +118,50 @@ class _ReadTagState extends State<ReadTag> {
   }
 }
 
-class ConfirmPage extends StatefulWidget {
-  @override
-  _ConfirmPageState createState() => _ConfirmPageState();
+void abilTag(BuildContext context) async{
+  bool check = await manager.addReadable();
+  allert(context, check: check);
+
 }
 
-class _ConfirmPageState extends State<ConfirmPage> {
-  @override
-  void initState() {
-    manager = NFCM.NfcManager();
+
+Future<Widget> allert(BuildContext context, {int i, bool check}){
+  String text="Tag reading error!\nTry reading the tag again!";
+
+  if(check != null){
+    if (check==true){
+      text="Tag Enabled";
+    }else{
+      text="Error!";
+    }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
-    var currentColor;
-    var text;
-
-    print(args.check);
-    switch (args.check) {
+  if(i != null){
+    switch (i) {
       case 1:
-        currentColor = Colors.green;
         text = 'You can read this Tag!';
         break;
 
       case 0:
-        currentColor = Colors.yellowAccent;
-        text =
-            'WARNING: \nYou are not authorized to read this key \nAfter 3 attempts the content on the tag will be deleted';
+        text = 'WARNING:\nYou are not authorized to read this key\nAfter 3 attempts this tag will be locked';
         break;
 
       case -1:
-        currentColor = Colors.red;
-        text = 'WARNING: \n You are not authorized to read this key!!';
+        text = 'WARNING:\nYou are not authorized to read this key!!';
         break;
     }
-
-    return Scaffold(
-      backgroundColor: currentColor,
-      body: Center(
-        child: Container(
-          child: Container(
-            child: (args.check == null)
-                ? CircularProgressIndicator(
-                    value: 25,
-                  )
-                : Text(text),
-          ),
-        ),
-      ),
-    );
   }
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(text,
+          style: TextStyle(
+            fontSize: 15,
+          ),
+          textAlign: TextAlign.center,
+          ),
+        );
+      });
 }
 
-/*
-@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: <Widget>[
 
-          SliverList(
-              delegate: SliverChildListDelegate([
-            Container(
-              margin: EdgeInsets.only(top: 30, bottom: 30),
-              decoration: new BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.55),
-                    spreadRadius: 3,
-                    blurRadius: 1000,
-                    offset: Offset(1, 1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/addkey');
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Read Tag",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              decoration: new BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.55),
-                    spreadRadius: 3,
-                    blurRadius: 1000,
-                    offset: Offset(1, 1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                     read();
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "TagManager",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 15, bottom: 30),
-              decoration: new BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.55),
-                    spreadRadius: 3,
-                    blurRadius: 1000,
-                    offset: Offset(1, 1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Card(
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  color: Colors.white,
-                  margin: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () {
-                     manager.addReadable();
-                    },
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Abil Tag",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
-          ]))
-        ],
-      ),
-    );
-  }
-
-_______________________________________
-
-@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Read Key')),
-      body: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Text('Read Tag'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[RaisedButton(
-                  child: Text('Read Tag'),
-                  onPressed: ()  {
-                    read();
-                    },
-                )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[RaisedButton(
-                  child: Text("Add tag's key with scan"),
-                  onPressed: () {manager.addReadable();},
-                )
-                ],
-              ),
-            ],
-          )
-
-      ),
-
-    );
-
- */
