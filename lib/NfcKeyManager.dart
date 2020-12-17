@@ -91,11 +91,8 @@ class NfcManager {
         } else {
           log.add(tag.id + ": Attempts exhausted, tag locked");
           print('Non più leggibile');
-
-          //TODO: ELIMINAZIONE DEL CONTENUTO DAL TAG
           deniedKey.add(tag.id);
-          attempts.remove(tag
-              .id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
+          attempts.remove(tag.id); //lo elimino dalla lista dei tentativi, se un giorno riabilitassi e bloccassi questo tag, avrà altri 3 tentativi
           return -1;
         }
       } else {

@@ -1,16 +1,25 @@
 # nfc_app
 
-A new Flutter application.
+App that allows the management of nfc tags
 
-## Getting Started
+## Functions
 
-This project is a starting point for a Flutter application.
+This application allows you to enable the reading of a tag through the id.
 
-A few resources to get you started if this is your first Flutter project:
+There are 2 ways to enable a tag:
+1) By manually inserting the key in the "TagManager" section
+2) By scanning the Tag in the "ReadMode" section
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+If the tag is not enabled and has never been read, in the event of an access attempt, it will have 3 possibilities to be enabled.
+If it is not enabled within the third attempt, the tag will be blocked.
+If it is enabled before the third attempt, the attempts will be reset.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If a tag is blocked it is always possible to unlock it by enabling it.
+
+The library used to read the tag is:
+- [flutter_nfc_kit](https://pub.dev/packages/flutter_nfc_kit)
+
+The supported tags for reading are:
+* ISO 14443 Type A & Type B (NFC-A / NFC-B / MIFARE Classic / MIFARE Plus / MIFARE Ultralight / MIFARE DESFire)
+* ISO 18092 (NFC-F / FeliCa)
+* ISO 15963 (NFC-V)
