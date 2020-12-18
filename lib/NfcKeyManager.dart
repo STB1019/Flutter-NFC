@@ -57,7 +57,10 @@ class NfcManager {
       if (availableKey.contains(tag.id) == true) {
         availableKey.remove(tag.id);
         if (attempts.containsKey(tag.id) == true){
-          attempts.remove(tag.id);
+          attempts.update(tag.id, (value) => 0);
+        }
+        if( deniedKey.contains(tag.id)== true){
+          deniedKey.remove(tag.id);
         }
         log.add(tag.id + ": tag enabled");
         return 1;
