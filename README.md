@@ -12,7 +12,7 @@ There are 2 ways to enable a tag:
 
 If the tag is not enabled and has never been read, in the event of an access attempt, it will have 3 possibilities to be enabled.
 If it is not enabled within the third attempt, the tag will be blocked.
-If it is enabled before the third attempt, the attempts will be reset.
+
 
 If a tag is blocked it is always possible to unlock it by enabling it.
 
