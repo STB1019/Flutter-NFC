@@ -2,6 +2,8 @@
 
 App that allows the management of nfc tags
 
+![Banner](assets/images/Cover_Nfc.png)
+
 ## Functions
 
 This application allows you to enable the reading of a tag through the id.
@@ -23,3 +25,8 @@ The supported tags for reading are:
 * ISO 14443 Type A & Type B (NFC-A / NFC-B / MIFARE Classic / MIFARE Plus / MIFARE Ultralight / MIFARE DESFire)
 * ISO 18092 (NFC-F / FeliCa)
 * ISO 15963 (NFC-V)
+
+### Branch / Chapter
+
+- [STB1019](https://github.com/orgs/STB1019)
+- [Chapter Flutter](https://github.com/orgs/STB1019/teams/chapter-flutter/discussions)
